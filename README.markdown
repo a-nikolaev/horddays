@@ -15,7 +15,7 @@ In **Horddays**, zombies try to be as close to this description as possible, alt
 they slightly differ in the way the perceive the world:
 
 ![Zombies](http://i.imgur.com/ZU7DVd5.png)
-- The green, Oddy, and can hear.
+- The green, Oddy, can hear.
 - The red, Sniffy, can smell.
 - The blue, Spotty, can see.
 
@@ -43,7 +43,7 @@ Medkit, Antidote, Rock, Grenade, Pistol, Smell-vision device (Olfactovisor), Lou
 ### 7DRL 2014
 This is my entry for 7DRL 2014.
 
-### How to build and run
+### To build and run
 
       $ make
       $ ./horddays
