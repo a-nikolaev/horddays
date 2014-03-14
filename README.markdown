@@ -1,7 +1,7 @@
 
 ## Horddays
 
-[Screenshot1](http://i.imgur.com/4EIh4FC.png)
+![Screenshot1](http://i.imgur.com/4EIh4FC.png)
 
 ### Zombies and humans
 What do we know about zombies?
@@ -27,10 +27,14 @@ you really have to use this something. Also, you cannot rearrange the inventory 
 the first item from the stack. This is another constraint you have to deal with.
 
 ### Controls
-`hjklyubn`, `Numpad`, `arrow keys`  Movement  
+`Vim kyes`, `Numpad` Movement  
+
 `f` or `Ctrl` Use item   
+
 `Space` or `Num5`  Wait   
+
 `q` Quit   
+
 
 ### Items
 Medkit, Antidote, Rock, Grenade, Pistol, Smell-vision device (Olfactovisor), Loudspeaker.
