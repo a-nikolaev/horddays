@@ -1,7 +1,9 @@
 
 ## Horddays
 
-[![Screenshot1](http://i.imgur.com/4EIh4FCs.png)](http://i.imgur.com/4EIh4FC.png)
+[![Screenshot1](http://i.imgur.com/4EIh4FCs.png)](http://i.imgur.com/4EIh4FC.png) 
+[![Screenshot2](http://i.imgur.com/d0N8GNqs.png)](http://i.imgur.com/d0N8GNq.png) 
+[![Screenshot3](http://i.imgur.com/l8xoAVls.png)](http://i.imgur.com/l8xoAVl.png) 
 
 ### Zombies and humans
 What do we know about zombies?
@@ -27,13 +29,13 @@ you really have to use this something. Also, you cannot rearrange the inventory 
 the first item from the stack. This is another constraint you have to deal with.
 
 ### Controls
-`Vim kyes`, `Numpad` Movement  
+`Numpad`, `vim keys`  walk
 
-`f` or `Ctrl` Use item   
+`f`, `Ctrl`  use the item   
 
-`Space` or `Num5`  Wait   
+`Space`, `Num5`  wait   
 
-`q` Quit   
+`q` quit   
 
 
 ### Items
