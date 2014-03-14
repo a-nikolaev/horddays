@@ -1,7 +1,7 @@
 
 ## Horddays
 
-![Screenshot1](http://i.imgur.com/4EIh4FC.png)
+[![Screenshot1](http://i.imgur.com/4EIh4FCs.png)](http://i.imgur.com/4EIh4FC.png)
 
 ### Zombies and humans
 What do we know about zombies?
