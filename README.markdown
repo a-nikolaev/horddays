@@ -37,12 +37,16 @@ the first item from the stack. This is another constraint you have to deal with.
 
 `q` quit   
 
-
 ### Items
 Medkit, Antidote, Rock, Grenade, Pistol, Smell-vision device (Olfactovisor), Loudspeaker.
 
 ### 7DRL 2014
 This is my entry for 7DRL 2014.
+
+### How to build
+
+      $ make
+      $ ./horddays
 
 ### License
 The game is distributed under GPL3 license. 
