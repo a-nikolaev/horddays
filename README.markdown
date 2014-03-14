@@ -43,7 +43,7 @@ Medkit, Antidote, Rock, Grenade, Pistol, Smell-vision device (Olfactovisor), Lou
 ### 7DRL 2014
 This is my entry for 7DRL 2014.
 
-### How to build
+### How to build and run
 
       $ make
       $ ./horddays
