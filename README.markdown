@@ -1,6 +1,10 @@
 
 ## Horddays
 
+![Horddays](http://i.imgur.com/gPtWAkV.png)
+
+![Horddays](http://i.imgur.com/hrxXDBB.png)
+
 [![Screenshot1](http://i.imgur.com/4EIh4FCs.png)](http://i.imgur.com/4EIh4FC.png) 
 [![Screenshot2](http://i.imgur.com/d0N8GNqs.png)](http://i.imgur.com/d0N8GNq.png) 
 [![Screenshot3](http://i.imgur.com/l8xoAVls.png)](http://i.imgur.com/l8xoAVl.png) 
@@ -8,7 +12,7 @@
 ### Zombies and humans
 What do we know about zombies?
 
-Zombies are slow and easy to kill. They are extremely dangerous when gathered in large groups.
+Zombies are slow and easy to kill. They are extremely dangerous when gethered in large groups.
 They like hiding behind every corner, and if they bite you, you become a zombie too, so be careful.
 
 In **Horddays**, zombies try to be as close to this description as possible, although, in addition,
@@ -19,12 +23,11 @@ they slightly differ in the way the perceive the world:
 - The red, Sniffy, can smell.
 - The blue, Spotty, can see.
 
-These undead fellows horde and move together. Unless you have enough weapons, try to avoid large groups.
+These undead fellows horde and walk around. Unless you have enough weapons, try to avoid large groups.
 
-Finding an Exit, is the only way to survive a day. 
-Your goal is to survive as many days as possible. 
+Each level is a day in your life. To survive it, you have to find the exit.
 
-The main character is a hoader - he (or she) cannot drop an item at will, so to get rid of something,
+The main character is a hoader - he (or she) cannot drop items at will, so to get rid of something,
 you really have to use this something. Also, you cannot rearrange the inventory and have to use 
 the first item from the stack. This is another constraint you have to deal with.
 
