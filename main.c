@@ -110,9 +110,9 @@ int main(int argc, char *argv[]) {
   srand(time(NULL));
 
   /* Initialize the state */
-  struct state st;
+  struct state *st = malloc(sizeof(*st));
 
-  state_init(&st);
+  state_init(st);
 
   int screen_width = 20 * TILE_WIDTH + TYPE_WIDTH * 23;
   int screen_height = 20 * TILE_HEIGHT + TYPE_HEIGHT * 5;
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
   if ( load_image(filename, &typeface) != 0 ) return 1;
   free(filename);
   
-  run(&st, screen, tileset, typeface);
+  run(st, screen, tileset, typeface);
 
   /* Finalize */
   SDL_FreeSurface(tileset);
