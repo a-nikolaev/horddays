@@ -1,6 +1,4 @@
 
-## Horddays
-
 ![Horddays](http://i.imgur.com/gPtWAkV.png)
 
 ![Horddays](http://i.imgur.com/hrxXDBB.png)
