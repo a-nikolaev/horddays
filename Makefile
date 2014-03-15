@@ -10,8 +10,8 @@ OBJS = $(SRCS:.c=.o)
 
 EXEC = horddays
  
-CFLAGS += $(shell sdl-config --cflags) -Wall -lm 
-LDLIBS += $(shell sdl-config --libs)
+CFLAGS += $(shell sdl-config --cflags) -Wall -O2  
+LDLIBS += $(shell sdl-config --libs) -lm
 
 # Build
 all: $(EXEC)

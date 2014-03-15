@@ -1,13 +1,16 @@
 # funny stuff
-CC = x86_64-w64-mingw32-gcc
+#ZPREFIX = x86_64-w64-mingw32
+ZPREFIX = i686-w64-mingw32
+#ZPREFIX = i486-mingw32
+CC = $(ZPREFIX)-gcc
 
 EXEC = horddays.exe
 
-MINGWPATH=/usr/x86_64-w64-mingw32/
+MINGWPATH=/usr/$(ZPREFIX)/
 
 CPPFLAGS += -DMINGW32=1
-CFLAGS += $(shell $(MINGWPATH)bin/sdl-config --cflags) -Wall -lm 
-LDLIBS += $(shell $(MINGWPATH)bin/sdl-config --libs)
+CFLAGS += $(shell $(MINGWPATH)bin/sdl-config --cflags) -Wall -O2 -g
+LDLIBS += $(shell $(MINGWPATH)bin/sdl-config --libs) -lm
 
 # normal stuff
 SHELL = /bin/sh

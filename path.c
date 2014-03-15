@@ -35,18 +35,9 @@ char *get_xdg_data_home() {
 /* Create an array of possible paths to the game data 
 
    Allocates memory!
-  
-   1) "."
-   2) $XDG_DATA_HOME/curseofwar/
-      Defaults to ~/.local/share/curwseofwar/
-   3) ~/.curseofwar/
-   4) /usr/local/share/curseofwar/
-   5) /usr/share/curseofwar/
-   6) /usr/share/curseofwar-sdl/
-   7) /usr/share/curseofwar-common/
- */
+*/
 char **get_search_paths() {
-  char *suffix = "/hoardie/";
+  char *suffix = "/horddays/";
 
 #ifndef WIN32
   int dirs_num = 5;
@@ -57,9 +48,9 @@ char **get_search_paths() {
   s = get_xdg_data_home();
   path[1] = concat(s, suffix);
   free(s);
-  path[2] = concat(getenv("HOME"), "/.hoardie/");
-  path[3] = strdup("/usr/local/share/hoardie/");
-  path[4] = strdup("/usr/share/hoardie/");
+  path[2] = concat(getenv("HOME"), "/.horddays/");
+  path[3] = strdup("/usr/local/share/horddays/");
+  path[4] = strdup("/usr/share/horddays/");
 #else
   int dirs_num = 1;
   char **path = (char**) malloc(sizeof(char*) * (dirs_num + 1));
