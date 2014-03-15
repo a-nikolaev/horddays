@@ -6,9 +6,13 @@
 [![Screenshot3](http://i.imgur.com/l8xoAVls.png)](http://i.imgur.com/l8xoAVl.png) 
 
 ### 7DRL versions:
-This is my entry for 7DRL 2014.
-Source code (Linux, OSX): [v0.7d.1](https://github.com/a-nikolaev/horddays/releases/tag/v0.7d.1)
-Windows (32bit): [v0.7d.1.win](https://github.com/a-nikolaev/horddays/releases/tag/v0.7d.1.win)
+This is my entry for 7DRL 2014.    
+Source code (Linux, OSX): [v0.7d.1](https://github.com/a-nikolaev/horddays/releases/tag/v0.7d.1).     
+Windows (32bit): [v0.7d.1.win](https://github.com/a-nikolaev/horddays/releases/tag/v0.7d.1.win).     
+
+### To build and run
+      $ make
+      $ ./horddays
 
 ![Horddays](http://i.imgur.com/hrxXDBB.png)
 
@@ -46,10 +50,6 @@ the first item from the stack. This is another constraint you have to deal with.
 ### Items
 Medkit, Antidote, Rock, Grenade, Pistol, Smell-vision device (Olfactovisor), Loudspeaker.
 
-### To build and run
-
-      $ make
-      $ ./horddays
 
 ### License
 The game is distributed under GPL3 license. 
