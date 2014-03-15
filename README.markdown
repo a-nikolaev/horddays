@@ -1,11 +1,16 @@
 
 ![Horddays](http://i.imgur.com/gPtWAkV.png)
 
-![Horddays](http://i.imgur.com/hrxXDBB.png)
-
 [![Screenshot1](http://i.imgur.com/4EIh4FCs.png)](http://i.imgur.com/4EIh4FC.png) 
 [![Screenshot2](http://i.imgur.com/d0N8GNqs.png)](http://i.imgur.com/d0N8GNq.png) 
 [![Screenshot3](http://i.imgur.com/l8xoAVls.png)](http://i.imgur.com/l8xoAVl.png) 
+
+### 7DRL versions:
+This is my entry for 7DRL 2014.
+Source code (Linux, OSX): [v0.7d.1](https://github.com/a-nikolaev/horddays/releases/tag/v0.7d.1)
+Windows (32bit): [v0.7d.1.win](https://github.com/a-nikolaev/horddays/releases/tag/v0.7d.1.win)
+
+![Horddays](http://i.imgur.com/hrxXDBB.png)
 
 ### Zombies and humans
 What do we know about zombies?
@@ -13,7 +18,7 @@ What do we know about zombies?
 Zombies are slow and easy to kill. They are extremely dangerous when gethered in large groups.
 They like hiding behind every corner, and if they bite you, you become a zombie too, so be careful.
 
-In **Horddays**, zombies try to be as close to this description as possible, although, in addition,
+In Horddays, zombies try to be as close to this description as possible, although, in addition,
 they slightly differ in the way the perceive the world:
 
 ![Zombies](http://i.imgur.com/ZU7DVd5.png)
@@ -40,9 +45,6 @@ the first item from the stack. This is another constraint you have to deal with.
 
 ### Items
 Medkit, Antidote, Rock, Grenade, Pistol, Smell-vision device (Olfactovisor), Loudspeaker.
-
-### 7DRL 2014
-This is my entry for 7DRL 2014.
 
 ### To build and run
 
