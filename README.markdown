@@ -11,7 +11,7 @@ Source code (Linux, OSX): [v0.7d.1](https://github.com/a-nikolaev/horddays/relea
 Windows (32bit): [v0.7d.1.win](https://github.com/a-nikolaev/horddays/releases/tag/v0.7d.1.win).     
 
 To avoid possible confusion, until the end of 7DRL, the master branch 
-of this repository will be kept essintially unchanged. I will be doing only minor 
+of this repository will be kept essentially unchanged. I will be doing only minor 
 editing to README. Thanks for playing.
 
 ### To build and run
