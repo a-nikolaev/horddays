@@ -57,6 +57,7 @@ struct grid {
   int width;
 };
 
+int loc_lookthru (struct grid *g, int i, int j, int k);
 
 int zlevel(struct grid *g, int i, int j);
 int is_within_ij (struct grid *g, int i, int j);

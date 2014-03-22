@@ -91,7 +91,6 @@ void run(struct state *s,
         }
       }
 
-      if (!(s->players_turn)) {update_vision(s);}
       run_mobs(s);
 
       if (k % 5 == 0) {

@@ -228,32 +228,41 @@ void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL
   sprintf(str_level, "Day: %i", s->status.level);
 
   int status_text_x = (CENTER_X*2 + 1 + 1) * TILE_WIDTH + 0*TYPE_WIDTH;
-  int status_text_y =  2 * TILE_HEIGHT;
+  int status_text_y =  3 * TILE_HEIGHT;
+
+  
+  /* Wind info */
+  output_string(typeface, screen, "Wind:", 
+      status_text_x, status_text_y + 6 * TYPE_HEIGHT);
+  blit_subpic (tileset, screen, s->wind_dir, 3, CENTER_X*2+4, 6);
+
+  
+  /* Score */ 
   output_string(typeface, screen, str_score, 
-      status_text_x, status_text_y + 3*TYPE_HEIGHT);
+      status_text_x, status_text_y + 2*TYPE_HEIGHT);
   output_string(typeface, screen, str_level, 
-      status_text_x, status_text_y + 5*TYPE_HEIGHT);
+      status_text_x, status_text_y + 4*TYPE_HEIGHT);
 
   if(s->status.effect[EF_PISTOL]>0){
     char str[25];
-    output_string(typeface, screen, "Firing pistol", 
-        status_text_x, status_text_y + 7*TYPE_HEIGHT);
+    output_string(typeface, screen, "Shooting", 
+        status_text_x, status_text_y + 8*TYPE_HEIGHT);
     sprintf(str, "Rounds: %i", s->status.effect[EF_PISTOL]);
     output_string(typeface, screen, str, 
-        status_text_x, status_text_y + 8*TYPE_HEIGHT);
+        status_text_x, status_text_y + 9*TYPE_HEIGHT);
   }
   if(s->status.effect[EF_OLFACTOVISOR]>0){
     char str[25];
     sprintf(str, "Olfactovisor on");
     output_string(typeface, screen, str, 
-        status_text_x, status_text_y + 10*TYPE_HEIGHT);
+        status_text_x, status_text_y + 11*TYPE_HEIGHT);
   }
   if(s->status.effect[EF_CANNIBAL]>0){
     output_string(typeface, screen, "(: Playing  :)", 
-        status_text_x, status_text_y + 12*TYPE_HEIGHT);
-    output_string(typeface, screen, "(: Cannibal :)", 
         status_text_x, status_text_y + 13*TYPE_HEIGHT);
-    output_string(typeface, screen, "(:  Corpse  :)", 
+    output_string(typeface, screen, "(: Cannibal :)", 
         status_text_x, status_text_y + 14*TYPE_HEIGHT);
+    output_string(typeface, screen, "(:  Corpse  :)", 
+        status_text_x, status_text_y + 15*TYPE_HEIGHT);
   }
 }

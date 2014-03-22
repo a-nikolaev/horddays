@@ -94,7 +94,7 @@ int bresenham (struct grid *g, int z, int x0, int y0, int x1, int y1) {
   while(1){
     
     /* plot(x0,y0) */
-    if (g->block[x0][y0][z]) {return 0;}
+    if (!loc_lookthru(g,x0,y0,z)) {return 0;}
 
     if (x0 == x1 && y0 == y1) {break;}
     e2 = 2*err;

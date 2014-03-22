@@ -29,14 +29,14 @@
 
 /* */
 #define NOISE_STAND SENSE_ME*1.0
-#define NOISE_WALK SENSE_ME*400.0
-#define NOISE_HIT 1000.0
-#define NOISE_GRENADE 10000.0
-#define NOISE_PISTOL 3000.0
-#define NOISE_CANNIBAL 20000.0
+#define NOISE_WALK SENSE_ME*200.0
+#define NOISE_HIT 600.0
+#define NOISE_GRENADE 6000.0
+#define NOISE_PISTOL 2000.0
+#define NOISE_CANNIBAL 10000.0
 
 /* smell */
-#define SMELL_STRENGTH SENSE_ME*50.0
+#define SMELL_STRENGTH SENSE_ME*100.0
 
 /* sight */
 #define MOB_VIS_RAD VIS_RAD
@@ -133,6 +133,7 @@ struct state {
   struct cons cons;
   struct vision vision;
   struct player pl;
+  int wind_dir;
 
   struct mobs mobs;
   struct prio prio;

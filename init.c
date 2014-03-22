@@ -374,6 +374,9 @@ void level_init (struct state *s) {
   k = s->cons.conz[exit_loc];
   s->grid.loc[i][j][k].tl = tl_exit;
 
+  /* Wind */
+  s->wind_dir = urandom(8);
+
   /* Position the player */
   find_minmax_empty(s, 5, &i, &j, &k);
 
@@ -392,8 +395,7 @@ void level_init (struct state *s) {
   s->camera.x = i;
   s->camera.y = j;
   s->camera.z = SZ-1;
-  
-  
+
   /* update vision */
   blank_vision(&s->grid, &s->vision, SX/2, SY/2, (SX+SY));
   blank_vision_seen(&s->grid, &s->vision, SX/2, SY/2, (SX+SY));

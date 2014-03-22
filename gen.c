@@ -359,6 +359,9 @@ void cleanup_locs (struct grid *g) {
 void distribute_items (struct grid *g, double prob, int level) {
   int i, j, k;
 
+  static int arr_items[ITEMS_NUM] = {IT_MEDKIT, IT_ROCK, IT_ANTIDOTE, IT_GRENADE, IT_PISTOL, IT_OLFACTOVISOR, IT_CANNIBAL};
+  static double arr_items_rate[ITEMS_NUM] = {1.0, 1.0, 1.0, 1.0, 1.0, 0.2, 0.5};
+
   double adj_prob = prob * (1.0 + 0.1*(double)level);
   if (adj_prob > prob * 4.0) {adj_prob = prob * 4.0;}
 
@@ -369,7 +372,10 @@ void distribute_items (struct grid *g, double prob, int level) {
       
       if (g->loc[i][j][k].tl == tl_floor) {
         if (urandomf(1.0) < adj_prob){ 
-          int v = urandom(ITEMS_NUM);
+          int v = 0;
+          //v = urandom(ITEMS_NUM);
+          v = sample_arr(ITEMS_NUM, arr_items, arr_items_rate);
+
           if (v < level+1){
             g->loc[i][j][k].id_item = v;
           }

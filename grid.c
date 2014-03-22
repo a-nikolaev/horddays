@@ -36,6 +36,11 @@ int tl_lookthru (enum tl tl) {
   }
 }
 
+int loc_lookthru (struct grid *g, int i, int j, int k) {
+  struct loc * loc = &(g->loc[i][j][k]);
+  return tl_lookthru( loc->tl ) && loc->smoke <= 0;
+}
+
 int zlevel(struct grid *g, int i, int j) {
   int k = 0; 
   while (k+1 < SZ && g->block[i][j][k]) {++k;}
@@ -133,7 +138,7 @@ void vmark_xynb(struct grid *g, struct vision *v, int i, int j, int k, int kminu
 }
 
 int vcheck(struct grid *g, struct vision *v, int i, int j, int k) {
-  return ( is_within_ij(g,i,j) && tl_lookthru(g->loc[i][j][k].tl) );
+  return ( is_within_ij(g,i,j) && loc_lookthru(g,i,j,k) );
 }
 
 void vscan(struct grid *g, struct vision *v,

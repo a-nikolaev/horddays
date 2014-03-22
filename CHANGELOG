@@ -1,0 +1,6 @@
+
+* Added wind (with a UI wind indicator).
+* Smoke blocks vision (both, player's and zombies')
+* Smoke is dynamic (smoke clouds are moving).
+* Item generation rates.
+* Reduced sound perception rates.

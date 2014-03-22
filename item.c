@@ -144,7 +144,7 @@ double throw_item(struct state *s, struct throwing *thr){
               }
              
               /* add smoke */
-              s->grid.loc[thr->x+dx][thr->y+dy][z].smoke = 1+urandom(2);
+              s->grid.loc[thr->x+dx][thr->y+dy][z].smoke = 2+urandom(2);
             }
           }
         }

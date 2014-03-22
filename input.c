@@ -170,7 +170,15 @@ int process_input (struct state *s, char c) {
     
     /* add noise */
     make_noise(s, s->pl.coord.x, s->pl.coord.y, s->pl.coord.z, noise);
-    
+   
+    /* change the wind */
+    int i;
+    for(i=0; i<1; ++i) {
+      if (urandomf(1.0) < 0.01) {
+        s->wind_dir = ((s->wind_dir + urandom(3)-1) + 8) % 8;
+      }
+    }
+
     /* move camera */
     int dx = (s->camera.x - s->pl.coord.x);
     int dy = (s->camera.y - s->pl.coord.y);

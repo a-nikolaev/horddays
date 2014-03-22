@@ -481,7 +481,7 @@ void make_noise(struct state *s, int i, int j, int k, double amount) {
 
 }
 
-void loc_changes(struct state *s, double blood_decay_p, double smell_decay_p, double smoke_decay_p) {
+void loc_changes(struct state *s, double wind_p, double blood_decay_p, double smell_decay_p, double smoke_decay_p) {
   int i, j, k;
   int i2, j2, k2;
 
@@ -502,6 +502,10 @@ void loc_changes(struct state *s, double blood_decay_p, double smell_decay_p, do
               i2 = i + urandom(3) - 1;
               j2 = j + urandom(3) - 1;
               k2 = k + urandom(3) - 1;
+              if (urandom(1.0) < wind_p) {
+                i2 += arrdx[s->wind_dir];
+                j2 += arrdy[s->wind_dir];
+              }
 
               if (is_within_ij(&s->grid, i2, j2) && k2>=0 && k2<SZ && !s->grid.block[i2][j2][k2]) {
                 s->grid.loc[i2][j2][k2].smell++;
@@ -519,9 +523,30 @@ void loc_changes(struct state *s, double blood_decay_p, double smell_decay_p, do
 
         /* smoke */
         if (s->grid.loc[i][j][k].smoke > 0) {
-          if (urandomf(1.0) < smoke_decay_p) {
+
+          /* repeat this many times */
+          int rep = (s->grid.loc[i][j][k].smoke+2)/3;
+          while (rep > 0) {
+            rep--;
             s->grid.loc[i][j][k].smoke--;
+            
+            if (urandomf(1.0) < smoke_decay_p) {;}
+            else {
+              i2 = i + urandom(3) - 1;
+              j2 = j + urandom(3) - 1;
+              k2 = k + urandom(3) - 1;
+              if (urandom(1.0) < wind_p) {
+                i2 += arrdx[s->wind_dir];
+                j2 += arrdy[s->wind_dir];
+              }
+
+              if (is_within_ij(&s->grid, i2, j2) && k2>=0 && k2<SZ && !s->grid.block[i2][j2][k2]) {
+                s->grid.loc[i2][j2][k2].smoke++;
+              }
+            } 
           }
+
+
         }
 
       }
@@ -545,11 +570,12 @@ void run_mobs (struct state *s) {
     s->status.level++;
     s->status.score+=100;
     level_init(s);
+    update_vision(s);
   }
   else
   {
     /* blood decay, smell propagation */
-    loc_changes(s, 0.1, 0.03, 0.5);
+    loc_changes(s, 0.05, 0.1, 0.03, 0.1);
 
     /* run effects */
     if (s->pl.cond == bitten && s->pl.hp > 0) {
@@ -565,6 +591,7 @@ void run_mobs (struct state *s) {
     }
 
     run_all_mobs(s);
+    update_vision(s);
   }
   /* finished */
   s->players_turn = 1;
