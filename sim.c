@@ -368,7 +368,7 @@ double run_one_mob_id (struct state *s, int id) {
   /* choose direction */
   if (good_dirs > 0) {
     i = sample_arr (good_dirs, darr_dir, dsample_rate);
-    if (i>0) {
+    if (i>=0) {
       int dir = darr_dir[i];
       mob_walk (s, id, x+arrdx[dir], y+arrdy[dir], z+darr_dz[i]);
       
@@ -484,6 +484,15 @@ void make_noise(struct state *s, int i, int j, int k, double amount) {
 void loc_changes(struct state *s, double wind_p, double blood_decay_p, double smell_decay_p, double smoke_decay_p) {
   int i, j, k;
   int i2, j2, k2;
+  
+  for (j=0; j<s->grid.height; ++j) {
+    for (i=0; i<s->grid.width; ++i) {
+      for (k = 0; k<SZ; ++k) {
+        s->grid.loc_tmp[i][j][k].smell = s->grid.loc[i][j][k].smell;
+        s->grid.loc_tmp[i][j][k].smoke = s->grid.loc[i][j][k].smoke;
+      }
+    }
+  }
 
   for (j=0; j<s->grid.height; ++j) {
     for (i=0; i<s->grid.width; ++i) {
@@ -495,7 +504,7 @@ void loc_changes(struct state *s, double wind_p, double blood_decay_p, double sm
           int rep = (s->grid.loc[i][j][k].smell+2)/3;
           while (rep > 0) {
             rep--;
-            s->grid.loc[i][j][k].smell--;
+            s->grid.loc_tmp[i][j][k].smell--;
             
             if (urandomf(1.0) < smell_decay_p) {;}
             else {
@@ -507,8 +516,13 @@ void loc_changes(struct state *s, double wind_p, double blood_decay_p, double sm
                 j2 += arrdy[s->wind_dir];
               }
 
-              if (is_within_ij(&s->grid, i2, j2) && k2>=0 && k2<SZ && !s->grid.block[i2][j2][k2]) {
-                s->grid.loc[i2][j2][k2].smell++;
+              if (is_within_ij(&s->grid, i2, j2) && k2>=0 && k2<SZ) {
+                if(!s->grid.block[i2][j2][k2]) {
+                  s->grid.loc_tmp[i2][j2][k2].smell++;
+                }
+                else {
+                  s->grid.loc_tmp[i][j][k].smell++;
+                }
               }
             } 
           }
@@ -528,7 +542,7 @@ void loc_changes(struct state *s, double wind_p, double blood_decay_p, double sm
           int rep = (s->grid.loc[i][j][k].smoke+2)/3;
           while (rep > 0) {
             rep--;
-            s->grid.loc[i][j][k].smoke--;
+            s->grid.loc_tmp[i][j][k].smoke--;
             
             if (urandomf(1.0) < smoke_decay_p) {;}
             else {
@@ -540,8 +554,13 @@ void loc_changes(struct state *s, double wind_p, double blood_decay_p, double sm
                 j2 += arrdy[s->wind_dir];
               }
 
-              if (is_within_ij(&s->grid, i2, j2) && k2>=0 && k2<SZ && !s->grid.block[i2][j2][k2]) {
-                s->grid.loc[i2][j2][k2].smoke++;
+              if (is_within_ij(&s->grid, i2, j2) && k2>=0 && k2<SZ){
+                if(!s->grid.block[i2][j2][k2]) {
+                  s->grid.loc_tmp[i2][j2][k2].smoke++;
+                }
+                else {
+                  s->grid.loc_tmp[i][j][k].smoke++;
+                }
               }
             } 
           }
@@ -549,6 +568,15 @@ void loc_changes(struct state *s, double wind_p, double blood_decay_p, double sm
 
         }
 
+      }
+    }
+  }
+  
+  for (j=0; j<s->grid.height; ++j) {
+    for (i=0; i<s->grid.width; ++i) {
+      for (k = 0; k<SZ; ++k) {
+        s->grid.loc[i][j][k].smell = s->grid.loc_tmp[i][j][k].smell;
+        s->grid.loc[i][j][k].smoke = s->grid.loc_tmp[i][j][k].smoke;
       }
     }
   }
@@ -574,8 +602,8 @@ void run_mobs (struct state *s) {
   }
   else
   {
-    /* blood decay, smell propagation */
-    loc_changes(s, 0.05, 0.1, 0.03, 0.1);
+    /* wind prob, blood decay, smell decay, smoke decay  */
+    loc_changes(s, 0.05, 0.1, 0.05, 0.1);
 
     /* run effects */
     if (s->pl.cond == bitten && s->pl.hp > 0) {

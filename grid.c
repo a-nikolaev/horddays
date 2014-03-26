@@ -222,7 +222,7 @@ void vscan(struct grid *g, struct vision *v,
 
 void comp_vision (struct grid *g, struct vision *v, int x, int y, int z, int zminus, int zplus, int rad) {
   /* mark current point */
-  if (vcheck(g,v, x,y,z)) {
+  if (1 || vcheck(g,v, x,y,z)) {
     vmark_xynb(g,v, x,y,z, zminus, zplus, 1);
   }
 

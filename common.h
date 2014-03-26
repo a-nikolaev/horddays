@@ -21,8 +21,8 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#define MIN(x,y) ((x)<(y))?(x):(y)
-#define MAX(x,y) ((x)<(y))?(y):(x)
+#define MIN(x,y) (((x)<(y))?(x):(y))
+#define MAX(x,y) (((x)<(y))?(y):(x))
 
 // A random integer variate from Uniform[0,n-1]
 int urandom (int v);

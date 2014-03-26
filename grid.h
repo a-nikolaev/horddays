@@ -52,6 +52,7 @@ struct loc {
 
 struct grid {
   struct loc loc [SX][SY][SZ];
+  struct loc loc_tmp [SX][SY][SZ];
   int block [SX][SY][SZ];
   int height;
   int width;

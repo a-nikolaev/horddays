@@ -51,7 +51,13 @@ void player_init (struct state *s) {
   s->pl.marks = 0;
 }
 
-int spawn_one_mob (struct state *s, int i, int j, int k){
+#define MOB_TYPES_NUM 3
+int choose_mob_type(int num, double rates[MOB_TYPES_NUM]){
+  static int arr[MOB_TYPES_NUM] = {0, 1, 2};
+  return sample_arr(num, arr, rates);
+}
+
+int spawn_one_mob (struct state *s, int i, int j, int k, double mob_type_rates[MOB_TYPES_NUM]){
     
   if (s->grid.loc[i][j][k].id_mob != ID_NONE) { return 0; }
 
@@ -83,7 +89,7 @@ int spawn_one_mob (struct state *s, int i, int j, int k){
     default: outof = 3;
 
   }
-  switch (urandom(outof)) {
+  switch (choose_mob_type(outof, mob_type_rates)) {
     case 0: m->senses.sound = 1; break;  /* oddy */
     case 1: m->senses.smell = 1; break;  /* sniffy */
     default: m->senses.sight = 1;        /* spotty */
@@ -173,6 +179,12 @@ void spawn_mobs_connected(struct state *s, int num){
   int mobs_ready = 0;
   int success = 0;
   
+  /* choose spawn rates */
+  double mob_type_rates[MOB_TYPES_NUM] = {0.0, 0.0, 0.0};
+  for(i=0; i<MOB_TYPES_NUM; ++i) {
+    mob_type_rates[i] = 1.0 + urandomf(20.0);
+  }
+
   while ( attempts < 100 + mobs_ready*50 && (mobs_ready < num || postgeneration_runs < 200) ) {
     attempts++;
 
@@ -182,7 +194,7 @@ void spawn_mobs_connected(struct state *s, int num){
       y = s->cons.cony[i];
       z = s->cons.conz[i];
     
-      success = spawn_one_mob(s, x, y, z);
+      success = spawn_one_mob(s, x, y, z, mob_type_rates);
       if (success) {
         mobs_ready++;
       }

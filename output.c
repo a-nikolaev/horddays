@@ -63,7 +63,8 @@ void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL
       b_see_something = 0;
       for (k = 0; k<SZ; ++k) {
         if (s->vision.v[i][j][k] && 
-            !tl_lookthru (s->grid.loc[i][j][k].tl)) {
+            !tl_lookthru (s->grid.loc[i][j][k].tl) &&
+            (i != s->pl.coord.x || j != s->pl.coord.y)) {
           b_see_something = 1;
         }
       }
@@ -138,11 +139,13 @@ void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL
           }
         }
         else {
-          if (s->vision.seen[i][j][k]) {        
+          if (s->vision.seen[i][j][k] && (i != s->pl.coord.x || j != s->pl.coord.y)) {        
+            /* shade */
             blit_subpic (tileset, screen, k, 0, POSX(s,i), POSY(s,j));
             blit_subpic (tileset, screen, 2, 1, POSX(s,i), POSY(s,j));
           }
           if (b_see_something) {
+            /* wall */
             if (k < SZ-1) {
               blit_subpic (tileset, screen, 0, 1, POSX(s,i), POSY(s,j)); }
             else {

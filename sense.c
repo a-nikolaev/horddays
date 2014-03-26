@@ -22,6 +22,7 @@
 #include <math.h>
 
 #include "state.h"
+#include "common.h"
 
 void sense_sound (struct state *s, int id, int i, int j, int k, double mag) {
   struct mob *m = &s->mobs.mb[id];
@@ -62,11 +63,18 @@ void sense_smell (struct state *s, int id) {
 
   int rad = 2;
 
+  int di, dj;
+
   for(i=i0-rad; i<=i0+rad; ++i) {
-    for(j=j0-rad; j<j0+rad; ++j) {
-      for(k=k0-rad; k<k0+rad; ++k) {
+    for(j=j0-rad; j<=j0+rad; ++j) {
+      for(k=k0-rad; k<=k0+rad; ++k) {
         if (is_within_ij(&s->grid, i, j) && k>=0 && k<SZ && !s->grid.block[i][j][k]) {
          
+          di = i - i0;
+          dj = j - j0;
+          di = MAX(MIN(di, 1), -1);
+          dj = MAX(MIN(dj, 1), -1);
+
           sumx += (i-i0) * s->grid.loc[i][j][k].smell;
           sumy += (j-j0) * s->grid.loc[i][j][k].smell;
 
