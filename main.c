@@ -94,7 +94,7 @@ void run(struct state *s,
       run_mobs(s);
 
       if (k % 5 == 0) {
-        draw_all(s, tileset, typeface, screen);
+        draw_all(s, tileset, typeface, screen, k);
         SDL_Flip(screen);
       }
     }

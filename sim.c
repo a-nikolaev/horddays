@@ -175,7 +175,23 @@ void hit(struct state *s, int i, int j, int k, enum hit_type ht){
   } 
     
   make_noise(s, i, j, k, NOISE_HIT);
+}
 
+
+void hit_anything(struct state *s, int i, int j, int k, enum hit_type ht) {
+  if (is_not_occupied(&s->grid, i, j, k)) {
+    make_noise(s, i, j, k, NOISE_HIT);
+    if (urandom(2) == 0) {
+      s->grid.loc[i][j][k].id_obj = ID_NO_OBJ;
+      s->grid.loc[i][j][k].obj_param = 0;
+    }
+    if (urandom(3) == 0 && s->grid.loc[i][j][k].id_item != IT_ROCK) {
+      s->grid.loc[i][j][k].id_item = ID_NO_ITEM;
+    }
+  }
+  else {
+    hit(s, i, j, k, ht);
+  }
 }
 
 
@@ -235,7 +251,7 @@ void flocking (struct state *s, int id) {
               mob->senses.sight * other->senses.sight;
 
             double factor = 0.5 + 1.0 * (double) similar;
-            double factor_rv = 1.0*factor;
+            double factor_rv = 0.8*factor;
 
             len = vec_norm(&s->mobs.mb[id_other].vec);
             if (len > 1.0) {
@@ -368,7 +384,7 @@ double run_one_mob_id (struct state *s, int id) {
   /* choose direction */
   if (good_dirs > 0) {
     i = sample_arr (good_dirs, darr_dir, dsample_rate);
-    if (i>=0) {
+    if (i>=0 && urandom(6) > 0) {
       int dir = darr_dir[i];
       mob_walk (s, id, x+arrdx[dir], y+arrdy[dir], z+darr_dz[i]);
       
@@ -378,14 +394,14 @@ double run_one_mob_id (struct state *s, int id) {
       dt = darr_ap[i];
     }
     else {
-      mob->vec.x = 0.75 * mob->vec.x;
-      mob->vec.y = 0.75 * mob->vec.y;
+      mob->vec.x = 0.80 * mob->vec.x;
+      mob->vec.y = 0.80 * mob->vec.y;
     }
     dt = DEF_ZOMBIE_DELAY;
   }
   else{
-    mob->vec.x = 0.75 * mob->vec.x;
-    mob->vec.y = 0.75 * mob->vec.y;
+    mob->vec.x = 0.70 * mob->vec.x;
+    mob->vec.y = 0.70 * mob->vec.y;
   
     dt = DEF_ZOMBIE_DELAY /* * 0.5 * (1.0 + urandomf(1.0)) */;
   }
@@ -477,7 +493,37 @@ void make_noise(struct state *s, int i, int j, int k, double amount) {
       }
     }
   }
+}
 
+void loc_obj_changes(struct state *s) {
+  int i, j, k;
+  for (j=0; j<s->grid.height; ++j) {
+    for (i=0; i<s->grid.width; ++i) {
+      for (k = 0; k<SZ; ++k) {
+
+        if (s->grid.loc[i][j][k].id_obj != ID_NO_OBJ ) {
+          switch (s->grid.loc[i][j][k].id_obj){
+            case ID_NO_OBJ: break;
+            case OBJ_CANNIBAL:
+              make_noise(s, i, j, k, NOISE_CANNIBAL);
+              s->grid.loc[i][j][k].obj_param--;
+              break;
+            case OBJ_SMOKEGR:
+              s->grid.loc[i][j][k].smoke = 25+urandom(25);
+              s->grid.loc[i][j][k].obj_param--;
+              break;
+          }
+          
+          if (s->grid.loc[i][j][k].obj_param <= 0) {
+            s->grid.loc[i][j][k].id_obj = ID_NO_OBJ;
+            s->grid.loc[i][j][k].obj_param = 0;
+          }
+
+        }
+
+      }
+    }
+  }
 
 }
 
@@ -602,8 +648,11 @@ void run_mobs (struct state *s) {
   }
   else
   {
+    /* objects simulation */
+    loc_obj_changes(s);
+    
     /* wind prob, blood decay, smell decay, smoke decay  */
-    loc_changes(s, 0.05, 0.1, 0.05, 0.1);
+    loc_changes(s, 0.04, 0.1, 0.05, 0.1);
 
     /* run effects */
     if (s->pl.cond == bitten && s->pl.hp > 0) {

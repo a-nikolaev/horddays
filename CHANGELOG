@@ -1,4 +1,10 @@
 
+* The Cannibal Corpse loudspeaker is a placable item.
+* Added shotguns.
+* Added smoke grenades.
+* Item names are shown.
+* More versatile level generation.
+
 * Zombie spawning rates are randomized for each level.
 * Smell and smoke are more realistic - walls act as barriers
 * Fixed a bug for choosing zombies' direction to move

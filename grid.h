@@ -24,7 +24,7 @@
 
 #define SX 100
 #define SY 101
-#define SZ 8
+#define SZ 10
 
 #define BLOOD_STAINS_MAX 6
 #define SMELL_PIC_MAX 7
@@ -33,6 +33,7 @@
 #define ID_PLAYER -1
 #define ID_NONE -2
 #define ID_NO_ITEM -2
+#define ID_NO_OBJ -2
 
 struct coord { int x; int y; int z; };
 
@@ -48,6 +49,9 @@ struct loc {
   int stains;
   int smell;
   int smoke;
+
+  int id_obj;
+  int obj_param;
 };
 
 struct grid {

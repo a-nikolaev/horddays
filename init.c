@@ -30,7 +30,7 @@ void construct_level (struct state *s, int w, int h) {
   gen_box(&s->grid,w,h);
   
   //gen_level_random(&s->grid);
-  gen_level_ramps(&s->grid);
+  gen_level_ramps(&s->grid, s->status.level);
 
   cleanup_locs (&s->grid);
   
@@ -182,7 +182,8 @@ void spawn_mobs_connected(struct state *s, int num){
   /* choose spawn rates */
   double mob_type_rates[MOB_TYPES_NUM] = {0.0, 0.0, 0.0};
   for(i=0; i<MOB_TYPES_NUM; ++i) {
-    mob_type_rates[i] = 1.0 + urandomf(20.0);
+    double x = urandomf(5.0);
+    mob_type_rates[i] = 1.0 + x * x;
   }
 
   while ( attempts < 100 + mobs_ready*50 && (mobs_ready < num || postgeneration_runs < 200) ) {

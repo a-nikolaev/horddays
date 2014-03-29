@@ -19,6 +19,7 @@
 ******************************************************************************/
 #include "grid.h"
 #include "state.h"
+#include "item.h"
 #include "gfx.h"
 
 #include "output.h"
@@ -43,7 +44,7 @@ void draw_hp (struct state *s, int x, int y, SDL_Surface *tileset, SDL_Surface *
   }
 }
 
-void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL_Surface *screen) {
+void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL_Surface *screen, int time) {
   static const int shadow[3][3] = {{4,0,7},{1,10,3},{5,2,6}};
   
   /* Clear screen */
@@ -103,6 +104,21 @@ void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL
           /* item */
           if (s->grid.loc[i][j][k].id_item != ID_NO_ITEM) {
             blit_subpic (tileset, screen, s->grid.loc[i][j][k].id_item, 14, POSX(s,i), POSY(s,j));
+          }
+
+          /* object */
+          if (s->grid.loc[i][j][k].id_obj != ID_NO_OBJ) {
+            int beat = 0;
+            int speed = 1;
+            switch (s->grid.loc[i][j][k].id_obj) {
+              case OBJ_CANNIBAL :
+                speed = 2 * ((time / 1000) % 2) + 5;
+                beat = (time/(1*speed) + time/(4*speed)) % 2;
+                blit_subpic (tileset, screen, IT_CANNIBAL, 15 + beat, POSX(s,i), POSY(s,j));
+                break;
+              default:
+                ;
+            }
           }
 
           /* draw the mob, if there is any */
@@ -168,7 +184,7 @@ void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL
   draw_hp(s, CENTER_X*2+2, 1, tileset, typeface, screen);
 
 
-  /* Items */
+  /* Inventory */
   {
     int x = CENTER_X*2 + 7;
     int y = CENTER_Y*2 + 1;
@@ -213,6 +229,12 @@ void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL
       ls = ls->tail;
       i--;
     }
+ 
+    if (items_num > 0) {
+      char * str = item_name[s->pl.items->id_item];
+      output_string(typeface, screen, str,
+          (x-items_num+1)*TILE_WIDTH - strlen(str)*TYPE_WIDTH, y*TILE_WIDTH - 2*TYPE_HEIGHT); 
+    }
   }
   
   /* Text */
@@ -248,12 +270,22 @@ void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL
 
   if(s->status.effect[EF_PISTOL]>0){
     char str[25];
-    output_string(typeface, screen, "Shooting", 
+    output_string(typeface, screen, "Pistol", 
         status_text_x, status_text_y + 8*TYPE_HEIGHT);
     sprintf(str, "Rounds: %i", s->status.effect[EF_PISTOL]);
     output_string(typeface, screen, str, 
         status_text_x, status_text_y + 9*TYPE_HEIGHT);
   }
+  
+  if(s->status.effect[EF_SHOTGUN]>0){
+    char str[25];
+    output_string(typeface, screen, "Shotgun", 
+        status_text_x, status_text_y + 8*TYPE_HEIGHT);
+    sprintf(str, "Shells: %i", s->status.effect[EF_SHOTGUN]);
+    output_string(typeface, screen, str, 
+        status_text_x, status_text_y + 9*TYPE_HEIGHT);
+  }
+
   if(s->status.effect[EF_OLFACTOVISOR]>0){
     char str[25];
     sprintf(str, "Olfactovisor on");

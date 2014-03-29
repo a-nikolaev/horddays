@@ -24,6 +24,6 @@
 #define CENTER_X 10
 #define CENTER_Y 10
 
-void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL_Surface *screen);
+void draw_all (struct state *s, SDL_Surface *tileset, SDL_Surface *typeface, SDL_Surface *screen, int time);
 
 #endif

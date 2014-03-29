@@ -122,6 +122,7 @@ int process_input (struct state *s, char c) {
                       break;
                     case ac_throw:
                       if (id_item == IT_PISTOL) {s->status.effect[EF_PISTOL] = 8;}
+                      if (id_item == IT_SHOTGUN) {s->status.effect[EF_SHOTGUN] = 4;}
                       s->mode = mode_throw;
                       s->thr.x = s->pl.coord.x;
                       s->thr.y = s->pl.coord.y;
@@ -155,9 +156,11 @@ int process_input (struct state *s, char c) {
           /* pistol effect - return to the throw mode */ 
           if (s->mode == mode_move && s->status.effect[EF_PISTOL]>0) {
             s->mode = mode_throw;
-            //s->thr.x = s->pl.coord.x;
-            //s->thr.y = s->pl.coord.y;
             s->thr.id_item = IT_PISTOL;
+          }
+          if (s->mode == mode_move && s->status.effect[EF_SHOTGUN]>0) {
+            s->mode = mode_throw;
+            s->thr.id_item = IT_SHOTGUN;
           }
         }
     }

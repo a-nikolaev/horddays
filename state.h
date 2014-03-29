@@ -28,26 +28,33 @@
 #define SENSE_ME 1.0
 
 /* */
-#define NOISE_STAND SENSE_ME*5.0
-#define NOISE_WALK SENSE_ME*40.0
+#define NOISE_STAND SENSE_ME*0.0
+#define NOISE_WALK SENSE_ME*35.0
 #define NOISE_HIT 240.0
 #define NOISE_GRENADE 2400.0
-#define NOISE_PISTOL 800.0
-#define NOISE_CANNIBAL 4000.0
+#define NOISE_PISTOL 600.0
+#define NOISE_CANNIBAL 1200.0
+#define NOISE_SHOTGUN 1600.0
 
 /* smell */
 #define SMELL_STRENGTH SENSE_ME*800.0
 
 /* sight */
 #define MOB_VIS_RAD VIS_RAD
-#define SIGHT_STRENGTH SENSE_ME*200.0
+#define SIGHT_STRENGTH SENSE_ME*300.0
 
 #define MAX_HP 5
 
-#define EFFECTS_NUM 3
+/* effects */
+#define EFFECTS_NUM 4
 #define EF_PISTOL 0
 #define EF_OLFACTOVISOR 1
 #define EF_CANNIBAL 2
+#define EF_SHOTGUN 3
+
+#define OBJECTS_NUM 2
+#define OBJ_CANNIBAL 0
+#define OBJ_SMOKEGR 1
 
 enum mob_class { aggressive, friendly };
 enum condition { healthy, bitten, zombie };

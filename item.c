@@ -19,10 +19,13 @@
  
 ******************************************************************************/
 #include <stdlib.h>
+#include <math.h>
 #include "common.h"
 #include "state.h"
 #include "item.h"
 #include "sim.h"
+
+char* item_name[ITEMS_NUM] = {"Medkit", "Rock", "Antidote", "Grenade", "Pistol", "Olfactovisor", "Cannibal Corpse", "Shotgun", "Smoke Grenade"};
 
 struct item_list *item_list_add (struct item_list *ls, int elem) {
   struct item_list *nls = malloc(sizeof(*nls));
@@ -57,7 +60,9 @@ enum item_action get_action(int id_item) {
   switch(id_item){
     case IT_ROCK:;
     case IT_GRENADE:;
-    case IT_PISTOL:
+    case IT_PISTOL:;
+    case IT_SHOTGUN:;
+    case IT_SMOKEGR:
       return ac_throw;
     default:
       return ac_consume;
@@ -86,7 +91,14 @@ void use_item(struct state *s, int id_item){
       s->status.effect[EF_OLFACTOVISOR] = 120;
       break;
     case IT_CANNIBAL:
-      s->status.effect[EF_CANNIBAL] = 120;
+      //s->status.effect[EF_CANNIBAL] = 120;
+      if (s->grid.loc[s->pl.coord.x][s->pl.coord.y][s->pl.coord.z].id_obj == ID_NO_OBJ) {
+        s->grid.loc[s->pl.coord.x][s->pl.coord.y][s->pl.coord.z].id_obj = OBJ_CANNIBAL;
+        s->grid.loc[s->pl.coord.x][s->pl.coord.y][s->pl.coord.z].obj_param = 120;
+      } 
+      else {
+        add_item(&s->pl, IT_CANNIBAL);
+      }
       break;
     default:
       ;
@@ -99,12 +111,7 @@ double throw_item(struct state *s, struct throwing *thr){
     case IT_ROCK:
       {
         int z = zlevel(&s->grid, thr->x, thr->y);
-        if (is_not_occupied(&s->grid, thr->x, thr->y, z)) {
-          make_noise(s, thr->x, thr->y, z, NOISE_HIT);
-        }
-        else{
-          hit(s, thr->x, thr->y, z, hit_normal);
-        }
+        hit_anything(s, thr->x, thr->y, z, hit_normal);
         /* put the stone there */
         if (urandom(3)>0){
           s->grid.loc[thr->x][thr->y][z].id_item = thr->id_item;
@@ -115,13 +122,46 @@ double throw_item(struct state *s, struct throwing *thr){
       {
         make_noise(s, s->pl.coord.x, s->pl.coord.y, s->pl.coord.z, NOISE_PISTOL);
         int z = zlevel(&s->grid, thr->x, thr->y);
-        if (is_not_occupied(&s->grid, thr->x, thr->y, z)) {
-          make_noise(s, thr->x, thr->y, z, NOISE_HIT);
-        }
-        else{
-          hit(s, thr->x, thr->y, z, hit_normal);
-        }
+        hit_anything(s, thr->x, thr->y, z, hit_normal);
         s->status.effect[EF_PISTOL]--;
+      };
+      break;
+    case IT_SHOTGUN:
+      {
+        make_noise(s, s->pl.coord.x, s->pl.coord.y, s->pl.coord.z, NOISE_SHOTGUN);
+        int x, y, z;
+        int rad = 8;
+        int scalar, la, lb;
+        double angle;
+        for (x = s->pl.coord.x - rad; x <= s->pl.coord.x + rad; ++x) {
+          for (y = s->pl.coord.y - rad; y <= s->pl.coord.y + rad; ++y) {
+
+            if (! is_within_ij(&s->grid, x, y)) { continue; } 
+
+            z = zlevel(&s->grid, x, y);
+            if (s->vision.v[x][y][z]) {
+              scalar = 
+                (x - s->pl.coord.x)*(thr->x - s->pl.coord.x) +
+                (y - s->pl.coord.y)*(thr->y - s->pl.coord.y);
+              
+              if (scalar > 0) {
+                la = 
+                  (x-s->pl.coord.x) * (x-s->pl.coord.x) +
+                  (y-s->pl.coord.y) * (y-s->pl.coord.y);
+                lb = 
+                  (thr->x-s->pl.coord.x) * (thr->x-s->pl.coord.x) +
+                  (thr->y-s->pl.coord.y) * (thr->y-s->pl.coord.y);
+
+                angle = fabs( (double) scalar / sqrt((double) (la * lb)) );
+                
+                if (la <= rad*rad && angle > 0.93 && urandomf(1.0) < angle + (0.05/(double)la) ) {
+                  hit_anything(s, x, y, z, hit_normal);
+                }
+              }
+            }
+          }
+        }
+        s->status.effect[EF_SHOTGUN]--;
       };
       break;
     case IT_GRENADE:
@@ -139,7 +179,7 @@ double throw_item(struct state *s, struct throwing *thr){
 
               if (!is_not_occupied(&s->grid, thr->x+dx, thr->y+dy, z)) {
                 if (urandomf(1.0)<0.85) {
-                  hit(s, thr->x+dx, thr->y+dy, z, hit_normal);
+                  hit_anything(s, thr->x+dx, thr->y+dy, z, hit_normal);
                 }
               }
              
@@ -148,6 +188,35 @@ double throw_item(struct state *s, struct throwing *thr){
             }
           }
         }
+      };
+      break;
+    case IT_SMOKEGR:
+      {
+        
+        int z = zlevel(&s->grid, thr->x, thr->y);
+        
+        /*
+        int dx, dy;
+        int rad = 3;
+        for(dx = -rad; dx<=rad; ++dx){
+          for(dy = -(rad-abs(dx)); dy<=rad-abs(dx); ++dy){
+            if (is_within_ij(&s->grid, thr->x + dx, thr->y+dy)) {
+              z = zlevel(&s->grid, thr->x+dx, thr->y+dy);
+
+              s->grid.loc[thr->x+dx][thr->y+dy][z].smoke = 5+urandom(5);
+            }
+          }
+        }
+        */
+
+        if ( s->grid.loc[thr->x][thr->y][z].id_obj == ID_NO_OBJ ) {
+          s->grid.loc[thr->x][thr->y][z].id_obj = OBJ_SMOKEGR;
+          s->grid.loc[thr->x][thr->y][z].obj_param = 60;
+        } 
+        else {
+          add_item(&s->pl, IT_SMOKEGR);
+        }
+
       };
       break;
     default:

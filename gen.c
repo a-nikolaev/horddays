@@ -145,6 +145,19 @@ int is_flat(int z[SX][SY], int ll, int rr, int bb, int tt){
   return 1;
 }
 
+int almost_flat(int z[SX][SY], int ll, int rr, int bb, int tt){
+  int i,j; 
+  int d;
+  for(j=bb; j<=tt; ++j) {
+    for(i=ll; i<=rr; ++i) {
+      d = z[i][j] - z[bb][ll];
+      if(d != 0 && d != 2) {return 0;}
+    }
+  }
+
+  return 1;
+}
+
 int no_stairs(int z[SX][SY], int ll, int rr, int bb, int tt){
   int i,j; 
   for(j=bb; j<=tt; ++j) {
@@ -165,17 +178,26 @@ int can_build_a_box(int z[SX][SY], int ll, int rr, int bb, int tt){
     (is_flat(z,ll-1,rr+1,bb-1,tt) && is_flat(z,ll-1,rr+1,tt+1,tt+1)) ;
 }
 void build_a_house(int z[SX][SY], int ll, int rr, int bb, int tt){
-  int high = z[ll][bb] + 2 + 2*urandom(2);
+  int high = z[ll][bb] + 2 + 2*urandom(3);
   if (high > SZ-1) { high = SZ-1; }
 
   int i_door = (ll+rr)/2;
   int j_door = (bb+tt)/2;
 
+  int door_width_1 = urandom(2);
+  int door_width_2 = urandom(2);
+
   int i,j;
 
   for(j=bb; j<=tt; ++j) {
     for(i=ll; i<=rr; ++i) {
-      if ((i-ll)*(i-rr)*(j-bb)*(j-tt) == 0 && abs(i-i_door)>1 && abs(j-j_door)>1) {
+      if ((i-ll)*(i-rr)*(j-bb)*(j-tt) == 0 && 
+          ( (i-i_door) < -door_width_1 ||
+            (i-i_door) >  door_width_2 )
+          && 
+          ( (j-j_door) < -door_width_1 ||
+            (j-j_door) >  door_width_2 ) 
+         ) {
         z[i][j] = high;
       }
     }
@@ -183,7 +205,7 @@ void build_a_house(int z[SX][SY], int ll, int rr, int bb, int tt){
 }
 
 void build_an_obstacle(int z[SX][SY], int ll, int rr, int bb, int tt){
-  int high = z[ll][bb] + 2 + 2*urandom(2);
+  int high = z[ll][bb] + 2 + 2*urandom(3);
   if (high > SZ-1) { high = SZ-1; }
 
   int i,j;
@@ -196,7 +218,7 @@ void build_an_obstacle(int z[SX][SY], int ll, int rr, int bb, int tt){
 }
 
 /* main function */
-void gen_level_ramps(struct grid *g){
+void gen_level_ramps(struct grid *g, int level){
   static int z[SX][SY];
   int i, j, k; 
 
@@ -224,9 +246,15 @@ void gen_level_ramps(struct grid *g){
   /* add ramps */
   int n;
   int tt, bb, ll, rr;
-  for(n = 0; n<w*h/4; ++n) {
+  int busy = MIN(urandom(5), level);
+  int number = (int) ((0.2 + 0.1*(double)busy) * (double)(w*h));
+
+  double prob_ramps = 0.50 - 0.05*(double)busy + urandomf(0.50);
+  double prob_houses = 0.45 - 0.10*(double)busy + urandomf(0.50);
+
+  for(n = 0; n<number; ++n) {
   
-    if (urandom(4) > 0) {
+    if (urandomf(1.0) < prob_ramps) {
       /* ramps begin */
 
       int wmin = 1;
@@ -253,7 +281,7 @@ void gen_level_ramps(struct grid *g){
         rr = ll + lmin + urandom(lmax-lmin);
       }
 
-      if ( no_stairs(z, ll-1, rr+1, bb-1, tt+1) ) {
+      if ( almost_flat(z, ll-1, rr+1, bb-1, tt+1) ) {
 
         if(vertical) {
 
@@ -274,7 +302,7 @@ void gen_level_ramps(struct grid *g){
       /* ramps end */
     }
     else {
-      if (urandom(2)>0) {
+      if (urandomf(1.0) < prob_houses) {
         /* houses */
         int wmin = 4;
         int wmax = 15;
@@ -350,6 +378,8 @@ void cleanup_locs (struct grid *g) {
         g->loc[i][j][k].smell = 0;
         g->loc[i][j][k].smoke = 0;
 
+        g->loc[i][j][k].id_obj = ID_NO_OBJ;
+        g->loc[i][j][k].obj_param = 0;
       }
     }
   }
@@ -359,10 +389,10 @@ void cleanup_locs (struct grid *g) {
 void distribute_items (struct grid *g, double prob, int level) {
   int i, j, k;
 
-  static int arr_items[ITEMS_NUM] = {IT_MEDKIT, IT_ROCK, IT_ANTIDOTE, IT_GRENADE, IT_PISTOL, IT_OLFACTOVISOR, IT_CANNIBAL};
-  static double arr_items_rate[ITEMS_NUM] = {1.0, 1.0, 1.0, 1.0, 1.0, 0.2, 0.5};
+  static int arr_items[ITEMS_NUM] = {IT_MEDKIT, IT_ROCK, IT_ANTIDOTE, IT_GRENADE, IT_PISTOL, IT_OLFACTOVISOR, IT_CANNIBAL, IT_SHOTGUN, IT_SMOKEGR};
+  static double arr_items_rate[ITEMS_NUM] = {1.0, 1.0, 1.0, 1.0, 0.6, 0.2, 0.5, 0.4, 0.4};
 
-  double adj_prob = prob * (1.0 + 0.1*(double)level);
+  double adj_prob = prob * (1.0 + 0.01*(double)level);
   if (adj_prob > prob * 4.0) {adj_prob = prob * 4.0;}
 
   for (i=0; i<SX; ++i){

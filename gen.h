@@ -31,7 +31,7 @@ void cleanup_locs (struct grid *g);
 
 void distribute_items (struct grid *g, double prob, int level);
 
-void gen_level_ramps(struct grid *g);
+void gen_level_ramps(struct grid *g, int level);
 
 
 #endif

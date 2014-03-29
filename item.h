@@ -23,7 +23,7 @@
 
 #include "state.h"
 
-#define ITEMS_NUM 7
+#define ITEMS_NUM 9
 
 #define IT_MEDKIT 0
 #define IT_ROCK 1
@@ -32,6 +32,10 @@
 #define IT_PISTOL 4
 #define IT_OLFACTOVISOR 5
 #define IT_CANNIBAL 6
+#define IT_SHOTGUN 7
+#define IT_SMOKEGR 8
+
+char* item_name[ITEMS_NUM];
 
 enum item_action {ac_throw, ac_consume};
 

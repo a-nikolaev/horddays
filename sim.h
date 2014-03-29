@@ -33,6 +33,8 @@ int walk_attempt (struct grid *g, int ni, int nj, int k);
 
 void hit(struct state *s, int i, int j, int k, enum hit_type);
 
+void hit_anything(struct state *s, int i, int j, int k, enum hit_type);
+
 void add_smell(struct state *s, int i, int j, int k, int amount);
 
 void make_noise(struct state *s, int i, int j, int k, double amount);
